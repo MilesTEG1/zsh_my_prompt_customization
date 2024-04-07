@@ -48,7 +48,7 @@ You need to remove any unnecessary plugins. For example, if you don't use docker
 I also use some functions to show and define aliases for some commands. Feel free to change them.
 All improvements are welcome, so submit you Pull requests.
 
-### For Windows
+## For Windows
 
 I use Windows Terminal, but as for macOS, you should use any terminal that can use a custom font.
 
