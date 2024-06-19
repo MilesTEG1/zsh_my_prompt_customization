@@ -2,6 +2,14 @@
 # ============================== Fichier .zshrc sur MBA M2 ============================= #
 # ====================================================================================== #
 
+
+
+# Changement d'icones :
+# Anciens -> Nouveaux
+# FBF1 -> 󰛳
+# f7ba -> f05a9 󰖩
+
+
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 # Set this with the name of the ethernet interface
@@ -11,6 +19,9 @@ case $OSTYPE in
 darwin*)
     # typeset -g POWERLEVEL9K_IP_INTERFACE=$(route get 1.1.1.1 | awk '/interface:/{print $2}')
     ETH_NAME=$(route get 1.1.1.1 | awk '/interface:/{print $2}')
+    # ETH_NAME=$(ip route get 1.1.1.1 | awk {' print $5 '})
+    ETH_WIFI="en0"
+    ETH_LAN="en7"
 ;;
 linux*)
     # typeset -g POWERLEVEL9K_IP_INTERFACE=$(ip -o route get to 1.1.1.1 | awk {' print $5 '})
@@ -36,6 +47,7 @@ export ZSH_CUSTOM="$ZSH/custom"
 ZSH_THEME=powerlevel10k/powerlevel10k
 
 typeset -g POWERLEVEL9K_MODE='nerdfont-complete'
+typeset -g POWERLEVEL9K_LEGACY_ICON_SPACING=false
 #source $ZSH_CUSTOM/themes/powerlevel9k/powerlevel9k.zsh-theme
 
 ##### Pour le code des couleurs, voilà la ligne de commande à lancer 
@@ -50,64 +62,213 @@ prompt_my_name()  {
 
 # Please only use this battery segment if you have material icons in your nerd font (or font)
 # Otherwise, use the font awesome one in "User Segments"
-prompt_zsh_battery_level() {
-  local percentage1=`pmset -g ps  |  sed -n 's/.*[[:blank:]]+*\(.*%\).*/\1/p'`
-  local percentage=`echo "${percentage1//\%}"`
-  local color='%F{red}'
-  local symbol="\uf00d"
-  pmset -g ps | grep "discharging" > /dev/null
-  if [ $? -eq 0 ]; then
-    local charging="false";
-  else
-    local charging="true";
-  fi
-  if [ $percentage -le 20 ]
-  then symbol='\uf579' ; color='%F{red}' ;
-    #10%
-  elif [ $percentage -gt 19 ] && [ $percentage -le 30 ]
-  then symbol="\uf57a" ; color='%F{red}' ;
-    #20%
-  elif [ $percentage -gt 29 ] && [ $percentage -le 40 ]
-  then symbol="\uf57b" ; color='%F{yellow}' ;
-    #35%
-  elif [ $percentage -gt 39 ] && [ $percentage -le 50 ]
-  then symbol="\uf57c" ; color='%F{yellow}' ;
-    #45%
-  elif [ $percentage -gt 49 ] && [ $percentage -le 60 ]
-  then symbol="\uf57d" ; color='%F{blue}' ;
-    #55%
-  elif [ $percentage -gt 59 ] && [ $percentage -le 70 ]
-  then symbol="\uf57e" ; color='%F{blue}' ;
-    #65%
-  elif [ $percentage -gt 69 ] && [ $percentage -le 80 ]
-  then symbol="\uf57f" ; color='%F{blue}' ;
-    #75%
-  elif [ $percentage -gt 79 ] && [ $percentage -le 90 ]
-  then symbol="\uf580" ; color='%F{blue}' ;
-    #85%
-  elif [ $percentage -gt 89 ] && [ $percentage -le 99 ]
-  then symbol="\uf581" ; color='%F{blue}' ;
-    #85%
-  elif [ $percentage -gt 98 ]
-  then symbol="\uf578" ; color='%F{green}' ;
-    #100%
-  fi
-  if [ $charging = "true" ];
-  then color='%F{green}'; if [ $percentage -gt 98 ]; then symbol='\uf584'; fi
-  fi
-  echo -n "%{$color%}$symbol" ;
-}
+# prompt_zsh_battery_level() {
+#   local percentage1=`pmset -g ps  |  sed -n 's/.*[[:blank:]]+*\(.*%\).*/\1/p'`
+#   local percentage=`echo "${percentage1//\%}"`
+#   local color='%F{red}'
+#   local symbol="\uf00d"
+#   pmset -g ps | grep "discharging" > /dev/null
+#   if [ $? -eq 0 ]; then
+#     local charging="false";
+#   else
+#     local charging="true";
+#   fi
+#   if [ $charging = "false" ]; then
+#     if [ $percentage -le 20 ]; then
+#       symbol='󰁺'
+#       color='%F{red}'
+#       #10%
+#     elif [ $percentage -gt 19 ] && [ $percentage -le 30 ]; then
+#       symbol="󰁻"
+#       color='%F{red}'
+#       #20%
+#     elif [ $percentage -gt 29 ] && [ $percentage -le 40 ]; then
+#       symbol="󰁼"
+#       color='%F{yellow}'
+#       #35%
+#     elif [ $percentage -gt 39 ] && [ $percentage -le 50 ]; then
+#       symbol="󰁽"
+#       color='%F{yellow}'
+#       #45%
+#     elif [ $percentage -gt 49 ] && [ $percentage -le 60 ]; then
+#       symbol="󰁾"
+#       color='%F{blue}'
+#       #55%
+#     elif [ $percentage -gt 59 ] && [ $percentage -le 70 ]; then
+#       symbol="󰁿"
+#       color='%F{blue}'
+#       #65%
+#     elif [ $percentage -gt 69 ] && [ $percentage -le 80 ]; then
+#       symbol="󰂀"
+#       color='%F{blue}'
+#       #75%
+#     elif [ $percentage -gt 79 ] && [ $percentage -le 90 ]; then
+#       symbol="󰂁"
+#       color='%F{blue}'
+#       #85%
+#     elif [ $percentage -gt 89 ] && [ $percentage -le 99 ]; then
+#       symbol="󰂂"
+#       color='%F{blue}'
+#       #85%
+#     elif [ $percentage -gt 98 ]; then
+#       symbol="󰁹"
+#       color='%F{green}'
+#       #100%
+#     fi
+  
+#   elif [ $charging = "true" ]; then
+#     color='%F{green}'; 
+#     if [ $percentage -le 20 ]; then
+#       symbol="󰁺󱐋"
+#       color='%F{red}'
+#       #10%
+#     elif [ $percentage -gt 19 ] && [ $percentage -le 30 ]; then
+#       symbol="󰁻󱐋"
+#       color='%F{red}'
+#       #20%
+#     elif [ $percentage -gt 29 ] && [ $percentage -le 40 ]; then
+#       symbol="󰁼󱐋"
+#       color='%F{yellow}'
+#       #35%
+#     elif [ $percentage -gt 39 ] && [ $percentage -le 50 ]; then
+#       symbol="󰁽󱐋"
+#       color='%F{yellow}'
+#       #45%
+#     elif [ $percentage -gt 49 ] && [ $percentage -le 60 ]; then
+#       symbol="󰁾󱐋"
+#       color='%F{green}'
+#       #55%
+#     elif [ $percentage -gt 59 ] && [ $percentage -le 70 ]; then
+#       symbol="󰁿󱐋"
+#       color='%F{green}'
+#       #65%
+#     elif [ $percentage -gt 69 ] && [ $percentage -le 80 ]; then
+#       symbol="󰂀󱐋"
+#       color='%F{green}'
+#       #75%
+#     elif [ $percentage -gt 79 ] && [ $percentage -le 90 ]; then
+#       symbol='󰂁󱐋'
+#       color='%F{green}'
+#       #85%
+#     elif [ $percentage -gt 89 ] && [ $percentage -le 99 ]; then
+#       symbol="󰂂󱐋"
+#       color='%F{green}'
+#       #85%
+#     elif [ $percentage -gt 98 ]; then
+#       symbol="󰁹󱐋"
+#     fi
+#   fi
+#   percent='%'
+#   echo -ne "%{$color%}$symbol ${percentage1} \%"
+# }
 
+##################### Backup #############################
+# prompt_zsh_battery_level() {
+#   local percentage1=`pmset -g ps  |  sed -n 's/.*[[:blank:]]+*\(.*%\).*/\1/p'`
+#   local percentage=`echo "${percentage1//\%}"`
+#   local color='%F{red}'
+#   local symbol="\uf00d"
+#   pmset -g ps | grep "discharging" > /dev/null
+#   if [ $? -eq 0 ]; then
+#     local charging="false";
+#   else
+#     local charging="true";
+#   fi
+#   if [ $percentage -le 20 ]
+#   then symbol='\uf579' ; color='%F{red}' ;
+#     #10%
+#   elif [ $percentage -gt 19 ] && [ $percentage -le 30 ]
+#   then symbol="\uf57a" ; color='%F{red}' ;
+#     #20%
+#   elif [ $percentage -gt 29 ] && [ $percentage -le 40 ]
+#   then symbol="\uf57b" ; color='%F{yellow}' ;
+#     #35%
+#   elif [ $percentage -gt 39 ] && [ $percentage -le 50 ]
+#   then symbol="\uf57c" ; color='%F{yellow}' ;
+#     #45%
+#   elif [ $percentage -gt 49 ] && [ $percentage -le 60 ]
+#   then symbol="\uf57d" ; color='%F{blue}' ;
+#     #55%
+#   elif [ $percentage -gt 59 ] && [ $percentage -le 70 ]
+#   then symbol="\uf57e" ; color='%F{blue}' ;
+#     #65%
+#   elif [ $percentage -gt 69 ] && [ $percentage -le 80 ]
+#   then symbol="\uf57f" ; color='%F{blue}' ;
+#     #75%
+#   elif [ $percentage -gt 79 ] && [ $percentage -le 90 ]
+#   then symbol="\uf580" ; color='%F{blue}' ;
+#     #85%
+#   elif [ $percentage -gt 89 ] && [ $percentage -le 99 ]
+#   then symbol="\uf581" ; color='%F{blue}' ;
+#     #85%
+#   elif [ $percentage -gt 98 ]
+#   then symbol="\uf578" ; color='%F{green}' ;
+#     #100%
+#   fi
+#   if [ $charging = "true" ];
+#   then color='%F{green}'; if [ $percentage -gt 98 ]; then symbol='\uf584'; fi
+#   fi
+#   echo -n "%{$color%}$symbol" ;
+# }
+###################### end backup #######################
 zsh_internet_signal() {
   local color
-  local symbol="\uf7ba"
-  if ifconfig ${ETH_NAME} | grep inactive &> /dev/null; then
-    color="%F{red}"
+  local symbol_wifi=""
+  local symbol_lan="󰛳"  # \uf06f3 󰛳
+  
+  local color_vpn="%F{#1164e0}"
+  local symbol_vpn="󰖂"   # \uf0582
+
+  local color_cellphone="%F{#26B33F}"
+  local symbol_cellphone="󰠕"
+
+  if ifconfig | grep ${ETH_WIFI} &> /dev/null; then
+    if ifconfig ${ETH_WIFI} | grep inactive &> /dev/null; then
+      symbol_wifi="󰖪"   # \uf05aa
+      color_wifi="%F{red}"
+    fi
   else
-    color="%F{blue}"
+    color_wifi="%F{blue}"
   fi
-  echo -n "%{$color%}$symbol "
+
+  if ifconfig | grep ${ETH_LAN} &> /dev/null; then
+    if ifconfig ${ETH_LAN} | grep active &> /dev/null; then
+      color_lan="%F{blue}"
+    fi
+  else
+    symbol_lan="󰲛"   # \uf0c9b
+    color_lan="%F{red}"
+  fi
+
+  local message="%{$color_wifi%}$symbol_wifi %{$color_lan%}$symbol_lan"
+
+  if [[ "${ETH_NAME}" == *"utun"* ]] || [[ "${ETH_NAME}" == *"feth"* ]] ; then
+    message="$message %{$color_vpn%}$symbol_vpn "    
+  fi
+  if [[ "${ETH_NAME}" == "en5" ]]; then
+    message="$message %{$color_cellphone%}$symbol_cellphone "    
+  fi
+
+  echo -n "${message}"
+
 }
+
+prompt_my_lan_ip_prompt() {
+  local foreground_color='white'
+  local background_color='blue'
+  local symbol_lan="󰌗"  # \uf06f3 󰛳
+
+  if [[ "${ETH_NAME}" == *"utun"* ]] || [[ "${ETH_NAME}" == *"feth"* ]] ; then
+    local ETH_IP=$(ip route get 1.1.1.1 | awk {' print $5 '})
+  else
+    local ETH_IP=$(ifconfig ${ETH_NAME} | awk '/inet/{print $2}')
+  fi
+  local message="󰩠 ${ETH_IP}"
+  # local message="󰩠 $(ifconfig ${ETH_NAME} | awk '/inet/{print $2}')"
+
+  p10k segment -t $message -i $symbol_lan -f $foreground_color -b $background_color;
+}
+
 
 # prompt_context() {
 #  if [[ "$USER" != "$DEFAULT_USER" || -n "$SSH_CLIENT" ]]; then
@@ -199,11 +360,13 @@ typeset -g POWERLEVEL9K_BATTERY_{CHARGING,CHARGED}_FOREGROUND=2
 # Show battery in yellow when it's discharging.
 typeset -g POWERLEVEL9K_BATTERY_DISCONNECTED_FOREGROUND=3
 # Battery pictograms going from low to high level of charge.
-typeset -g POWERLEVEL9K_BATTERY_STAGES='\uf58d\uf579\uf57a\uf57b\uf57c\uf57d\uf57e\uf57f\uf580\uf581\uf578'
+# typeset -g POWERLEVEL9K_BATTERY_STAGES='\uf58d\uf579\uf57a\uf57b\uf57c\uf57d\uf57e\uf57f\uf580\uf581\uf578'
+typeset -g POWERLEVEL9K_BATTERY_STAGES='󰂎󰁺󰁻󰁼󰁽󰁾󰁿󰂀󰂁󰂂󰁹'
 # Don't show the remaining time to charge/discharge.
 typeset -g POWERLEVEL9K_BATTERY_VERBOSE=false
-# typeset -g POWERLEVEL9K_BATTERY_BACKGROUND=0
-#typeset -g POWERLEVEL9K_CUSTOM_BATTERY_STATUS="prompt_zsh_battery_level"
+typeset -g POWERLEVEL9K_BATTERY_BACKGROUND=0
+# typeset -g POWERLEVEL9K_CUSTOM_BATTERY_STATUS="prompt_zsh_battery_level"
+typeset -g POWERLEVEL9K_CUSTOM_BATTERY_STATUS_BACKGROUND=0
 
 
 #####################################[ wifi: wifi speed ]#####################################
@@ -279,14 +442,15 @@ typeset -g POWERLEVEL9K_IP_FOREGROUND='white'
 #   P9K_IP_RX_RATE    | receive rate (since last prompt)
 #   P9K_IP_TX_RATE    | send rate (since last prompt)
 # typeset -g POWERLEVEL9K_IP_CONTENT_EXPANSION='${P9K_IP_RX_RATE:+⇣$P9K_IP_RX_RATE }${P9K_IP_TX_RATE:+⇡$P9K_IP_TX_RATE }$P9K_IP_IP'
-# typeset -g POWERLEVEL9K_IP_CONTENT_EXPANSION=$'\uFBF1''${P9K_IP_RX_RATE:+ %70F⇣$P9K_IP_RX_RATE}${P9K_IP_TX_RATE:+ %215F⇡$P9K_IP_TX_RATE}$P9K_IP_IP'
-typeset -g POWERLEVEL9K_IP_CONTENT_EXPANSION=$'\uFBF1 $P9K_IP_IP'
+# typeset -g POWERLEVEL9K_IP_CONTENT_EXPANSION=$'\u󰛳''${P9K_IP_RX_RATE:+ %70F⇣$P9K_IP_RX_RATE}${P9K_IP_TX_RATE:+ %215F⇡$P9K_IP_TX_RATE}$P9K_IP_IP'
+typeset -g POWERLEVEL9K_IP_CONTENT_EXPANSION=$'\u󰛳 $P9K_IP_IP'
+typeset -g POWERLEVEL9K_OS_ICON_CONTENT_EXPANSION='${P9K_CONTENT} '  # extra space at the end
 
 # Show information for the first network interface whose name matches this regular expression.
 # Run `ifconfig` or `ip -4 a show` to see the names of all network interfaces.
 # typeset -g POWERLEVEL9K_IP_INTERFACE='en0'
 # Set IP interface : https://github.com/romkatv/powerlevel10k/issues/451#issuecomment-1627701391
-typeset -g POWERLEVEL9K_IP_INTERFACE=${ETH_NAME}
+typeset -g POWERLEVEL9K_IP_INTERFACE='${ETH_NAME}'
 
 # case $OSTYPE in
 # darwin*)
@@ -307,7 +471,7 @@ typeset -g POWERLEVEL9K_IP_VISUAL_IDENTIFIER_EXPANSION=
 # prompt_my_ip()  {
 #   emulate -L zsh
 #   [[ -z $P9K_IP_IP ]] && return
-#   p10k segment -b 8 -f 38 -i "%F{blue}"$'\uFBF1' -t "%F{blue}$P9K_IP_IP"
+#   p10k segment -b 8 -f 38 -i "%F{blue}"$'\u󰛳' -t "%F{blue}$P9K_IP_IP"
 #   p10k segment -b 8 -t "%70F⇣$P9K_IP_RX_RATE %215F⇡$P9K_IP_TX_RATE"
 # }
 
@@ -333,10 +497,13 @@ typeset -g POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
 )
 typeset -g POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(
   # =========================[ Line #1 ]=========================
+  # custom_battery_status_joined
   battery               # internal battery
+  
   wifi                  # wifi speed
   public_ip    # Custom Colors are working
-  ip  # my_ip
+  # ip  # my_ip
+  my_lan_ip_prompt
   newline
   command_execution_time  # duration of the last command
   status                  # exit code of the last command
@@ -640,10 +807,10 @@ alias lt='eza --tree $eza_params'
 alias tree='eza --tree $eza_params'
 
 # alias ls='eza -gh --git --icons'                                                         # ls
-# alias l='eza -glbFh --git --icons'                                               # list, size, type, git
-# alias ll='eza -glbGFh --git --icons'                                             # long list
-# alias lla='eza -glbGFha --git --icons'                                             # long list + all files
-# alias llm='eza -glbGFh --git --icons --sort=modified'                            # long list, modified date sort
+# alias l='eza -glbhF --git --icons'                                               # list, size, type, git
+# alias ll='eza -glbGhF --git --icons'                                             # long list
+# alias lla='eza -glbGhaF --git --icons'                                             # long list + all files
+# alias llm='eza -glbGhF --git --icons --sort=modified'                            # long list, modified date sort
 # alias la='eza -lbhHigUmuSa --time-style=long-iso --git --icons --color-scale'  # all list
 # alias lx='eza -lbhHigUmuSa@ --time-style=long-iso --git --icons --color-scale' # all + extended list
 
@@ -1093,6 +1260,7 @@ echo -e "\n${BWhite}Pour autoriser une application ne venant pas d'une source of
 
 
 # Created by `pipx` on 2023-04-09 06:30:48
+
 export PATH="$PATH:$HOME/.local/bin"
 
 # This is for ZSH pulgins colorize : https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/colorize
