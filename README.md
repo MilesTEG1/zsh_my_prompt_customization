@@ -2,7 +2,7 @@
 
 This repo is about customizing ZSH shell prompt with my settings.
 I'm using a MacBook Air M2, so I use the battery indicator, and Wifi connexion.
-
+I also remote control some linux environment like Proxmox, VM, LXC...
 
 ## Shared requirements
 
@@ -76,3 +76,12 @@ You need to remove any unnecessary plugins. For example, if you don't use docker
 I also use some functions to show and define aliases for some commands. Feel free to change them.
 All improvements are welcome, so submit you Pull requests.
 
+## Some screenshots
+
+### Remote control of PVE terminal
+
+![alt text](https://github.com/MilesTEG1/zsh_my_prompt_customization/blob/0a6c658684164c14a3f34cebef05ecd14fa37cec/Linux-Proxmox/screenshot_iTerm2.png?raw=true)
+
+### My macOS terminal
+
+![alt text](https://github.com/MilesTEG1/zsh_my_prompt_customization/blob/main/macOS_iTerm2/screenshot_iTerm2.png?raw=true)
